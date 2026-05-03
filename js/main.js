@@ -1,0 +1,32 @@
+// Year
+const yearEl = document.getElementById('year');
+if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+// Mobile nav
+const toggle = document.querySelector('.nav-toggle');
+const links = document.querySelector('.nav-links');
+if (toggle && links) {
+  toggle.addEventListener('click', () => {
+    const open = links.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    links.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }));
+}
+
+// Reveal-on-scroll
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('in-view');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.section, .hero-inner, .cta-card, .proj-hero-inner').forEach(el => {
+  el.classList.add('reveal');
+  observer.observe(el);
+});
